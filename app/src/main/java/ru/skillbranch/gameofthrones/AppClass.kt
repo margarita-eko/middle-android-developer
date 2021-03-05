@@ -6,8 +6,11 @@ import ru.skillbranch.gameofthrones.database.AppDatabase
 
 class AppClass: Application() {
 
+    var isNetworkAvailable = false
+
     companion object {
         var db: AppDatabase? = null
+
         private var instance:AppClass? = null
 
         fun getDatabase(): AppDatabase? {
@@ -28,4 +31,5 @@ class AppClass: Application() {
         super.onCreate()
         db= AppDatabase.getDatabase(applicationContext)
     }
+
 }

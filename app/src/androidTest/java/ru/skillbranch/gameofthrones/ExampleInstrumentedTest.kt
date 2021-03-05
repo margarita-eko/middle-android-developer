@@ -235,7 +235,7 @@ class ExampleInstrumentedTest {
     @Test
     fun insert_characters_and_full() {
         ///Дроп базы
-        /*val lock = Object()
+        val lock = Object()
         RootRepository.dropDb {
             synchronized(lock) { lock.notify() }
         }
@@ -277,7 +277,7 @@ class ExampleInstrumentedTest {
         assertEquals(stubCharacterLyanna.name, actualCharacter?.mother?.name)
         assertEquals("Stark", actualCharacter?.mother?.house)
 
-         */
+
     }
 
     @Test
