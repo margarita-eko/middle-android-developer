@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.skillbranch.gameofthrones.R
+import ru.skillbranch.gameofthrones.data.local.entities.HouseType
 import ru.skillbranch.gameofthrones.databinding.FragmentCharacterListBinding
 import ru.skillbranch.gameofthrones.databinding.FragmentHousesBinding
 import ru.skillbranch.gameofthrones.ui.houses.HousesFragment
@@ -25,12 +26,11 @@ class CharacterListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-        initViewModel()
+        val houseName = arguments?.getString("HOUSE_NAME", HouseType.STARK.title) ?: HouseType.STARK.title
+        initViewModel(houseName)
         characterAdapter = CharacterListAdapter {
            //todo change params for character screen
-            val action = HousesFragmentDirections.actionCharacterListFragmentToCharacterScreenFragment(it.id,it.house,it.house)
+            val action = HousesFragmentDirections.actionCharacterListFragmentToCharacterScreenFragment(it.id,it.house.title,it.name)
             findNavController().navigate(action)
         }
         viewModel.getCharacters().observe(this, Observer {
@@ -49,19 +49,29 @@ class CharacterListFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_character_list, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //TODO create layout
+        /*with(_binding.rvCharacterList) {
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            addItemDecoration(ItemDivider())
+            adapter = characterAdapter
+        }*/
+    }
+
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(houseName: String) =
             CharacterListFragment().apply {
                 arguments = Bundle().apply {
-
+                    putString("HOUSE_NAME", houseName)
                 }
             }
     }
 
-    fun initViewModel(){
-        viewModel  = ViewModelProvider(this, CharacterListViewModel.CharacterListViewModelFactory(requireActivity().application)).get(
+    fun initViewModel(houseName: String){
+        viewModel  = ViewModelProvider(this, CharacterListViewModel.CharacterListViewModelFactory(houseName)).get(
             CharacterListViewModel::class.java)
     }
 }

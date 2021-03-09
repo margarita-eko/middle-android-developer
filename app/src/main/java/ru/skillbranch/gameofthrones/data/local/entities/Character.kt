@@ -27,7 +27,7 @@ data class Character(
                         "character.titles, character.aliases FROM characters_table as character ")
 data class CharacterItem(
     val id: String,
-    val house: String, //rel
+    val house: HouseType, //rel
     val name: String,
     val titles: List<String>,
     val aliases: List<String>
@@ -51,7 +51,7 @@ data class CharacterFull(
     val died: String,
     val titles: List<String>,
     val aliases: List<String>,
-    val house:String, //rel
+    val house:HouseType, //rel
     @Embedded(prefix = "father_")
     val father: RelativeCharacter?,
     @Embedded(prefix = "mother_")
@@ -61,5 +61,5 @@ data class CharacterFull(
 data class RelativeCharacter(
     val id: String,
     val name: String,
-    val house:String //rel
+    val house:HouseType //rel
 )

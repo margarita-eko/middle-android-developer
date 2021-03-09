@@ -1,6 +1,7 @@
 package ru.skillbranch.gameofthrones.database
 
 import androidx.room.TypeConverter
+import ru.skillbranch.gameofthrones.data.local.entities.HouseType
 
 class Converters {
 
@@ -20,6 +21,18 @@ class Converters {
         @JvmStatic
         fun stringToListOfString(string: String): List<String> {
             return string.split(",")
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun HouseTypeToString(houseType: HouseType): String {
+            return houseType.title
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun StringToHouseType(houseString: String): HouseType {
+            return HouseType.fromString(houseString)
         }
     }
 

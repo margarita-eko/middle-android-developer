@@ -6,11 +6,21 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
     tools:context=".ui.SplashScreenFragment">
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
     <ImageView
         android:id="@+id/iv_splash_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/spash" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

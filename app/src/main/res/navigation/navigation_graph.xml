@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/characterScreenFragment"
-        android:name="ru.skillbranch.gameofthrones.ui.CharacterScreenFragment"
+        android:name="ru.skillbranch.gameofthrones.ui.character.CharacterScreenFragment"
         android:label="fragment_character_screen"
         tools:layout="@layout/fragment_character_screen">
         <argument
@@ -41,5 +41,8 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <action
+            android:id="@+id/action_characterScreenFragment_self"
+            app:destination="@id/characterScreenFragment" />
     </fragment>
 </navigation>
