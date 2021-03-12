@@ -99,7 +99,7 @@ object RootRepository {
                     houseRes.swornMembers.forEach {
                         val response = RetrofitClient.getJSONApi().getCharacterByUrl(it.replace(AppConfig.BASE_URL,""))
                         if (isResponseOk(response, this::class.java.name)) {
-                            characterList.add(response.body()!!.apply { houseId = houseName })
+                            characterList.add(response.body()!!.apply { houseId = houseRes.shortName })
                         }
                     }
                     houses.add(houseRes to characterList)

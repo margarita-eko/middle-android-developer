@@ -20,15 +20,19 @@ data class CharacterRes(
     val povBooks: List<Any> = listOf(),
     val tvSeries: List<String> = listOf(),
     val playedBy: List<String> = listOf()
-){
+): IRes {
+
     lateinit var houseId: String
-    private var motherId = mother.getLastPathFromUrl()
-    private var fatherId = father.getLastPathFromUrl()
-    var id = url.getLastPathFromUrl()
+    val motherId: String get() = mother.getLastPathFromUrl()
+    val fatherId: String get() = father.getLastPathFromUrl()
+    override val id: String get() = url.getLastPathFromUrl()
 
     fun toCharacter(): Character {
         return Character(id, name, gender, culture, born, died, titles, aliases, fatherId, motherId, spouse, houseId)
     }
 
+}
 
+interface IRes {
+    val id: String
 }

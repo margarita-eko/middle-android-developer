@@ -22,7 +22,8 @@ interface DaoInterface {
     @Query("DELETE From characters_table")
     fun clearTableCharacters()
 
-    @Query("SELECT character.* FROM CharacterItem as character INNER JOIN houses_table as houses on character.house = houses.id  where houses.name = :houseName")
+    //@Query("SELECT character.* FROM CharacterItem as character INNER JOIN houses_table as houses on character.house = houses.id  where houses.name = :houseName")
+    @Query("SELECT * FROM CharacterItem  where house = :houseName")
     fun findCharactersByHouseName(houseName: String): List<CharacterItem>
 
     @Query("SELECT character.* FROM CharacterFull as character where character.id = :id")

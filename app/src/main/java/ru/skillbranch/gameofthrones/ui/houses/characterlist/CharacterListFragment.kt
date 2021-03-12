@@ -9,6 +9,8 @@ import androidx.lifecycle.GeneratedAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.skillbranch.gameofthrones.R
 import ru.skillbranch.gameofthrones.data.local.entities.HouseType
 import ru.skillbranch.gameofthrones.databinding.FragmentCharacterListBinding
@@ -39,6 +41,8 @@ class CharacterListFragment : Fragment() {
         })
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,11 +56,11 @@ class CharacterListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //TODO create layout
-        /*with(_binding.rvCharacterList) {
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            addItemDecoration(ItemDivider())
+        with(binding.rvCharacterList) {
+           layoutManager = LinearLayoutManager(context)
+           addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
             adapter = characterAdapter
-        }*/
+        }
     }
 
     companion object {

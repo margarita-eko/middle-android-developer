@@ -23,6 +23,7 @@
             app:expandedTitleGravity="center_horizontal|bottom"
             app:expandedTitleMarginBottom="64dp"
             app:expandedTitleTextAppearance="@style/CollapsingTitleAppearance"
+            app:layout_scrollFlags="exitUntilCollapsed|scroll"
             app:title="Arthos Stark">
 
             <ImageView
@@ -56,7 +57,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@android:color/white"
+        android:background="@android:color/white"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +74,7 @@
                 android:text="@string/words_title"
                 android:textColor="@color/color_gray_dark"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@id/tv_words"
+                app:layout_constraintEnd_toStartOf="@id/tv_words"
                 app:layout_constraintTop_toTopOf="parent"
                 app:drawableLeftCompat="@drawable/ic_icon_decor"
                 app:drawableTint="?attr/colorAccent" />
@@ -101,7 +102,7 @@
                 android:textColor="@color/color_gray_dark"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@id/tv_born"
+                app:layout_constraintEnd_toStartOf="@id/tv_born"
                 app:layout_constraintTop_toBottomOf="@id/tv_words_lable"
                 app:drawableLeftCompat="@drawable/ic_icon_decor"
                 app:drawableTint="?attr/colorAccent" />
@@ -129,7 +130,7 @@
                 android:textColor="@color/color_gray_dark"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@id/tv_titles"
+                app:layout_constraintEnd_toStartOf="@id/tv_titles"
                 app:layout_constraintTop_toBottomOf="@id/tv_born_lable"
                 app:drawableLeftCompat="@drawable/ic_icon_decor"
                 app:drawableTint="?attr/colorAccent" />
@@ -157,7 +158,7 @@
                 android:textColor="@color/color_gray_dark"
                 android:textSize="16sp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="@id/tv_aliases"
+                app:layout_constraintEnd_toStartOf="@id/tv_aliases"
                 app:layout_constraintTop_toBottomOf="@id/tv_titles_lable"
                 app:drawableLeftCompat="@drawable/ic_icon_decor"
                 app:drawableTint="?attr/colorAccent" />

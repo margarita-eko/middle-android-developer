@@ -1,5 +1,6 @@
 package ru.skillbranch.gameofthrones.data.remote.res
 
+import android.util.Log
 import ru.skillbranch.gameofthrones.AppConfig
 import ru.skillbranch.gameofthrones.data.local.entities.House
 
@@ -22,11 +23,13 @@ data class HouseRes(
     val swornMembers: List<String> = listOf()
 ) {
 
-    var shortName = shortName()
+    val shortName: String get() = shortName()
 
     private fun shortName(): String {
-        return name.split("of").first()
-                    .split(" ").last()
+        val shName = name.split("of").first().trim()
+                .split(" ").last()
+        Log.i("HouseRes", "shortName(): $name to : $shName")
+        return if (shName.isNullOrBlank()) name else shName
     }
 
     fun toHouse(): House {

@@ -8,6 +8,7 @@ import ru.skillbranch.gameofthrones.data.local.entities.HouseType
 import ru.skillbranch.gameofthrones.ui.houses.characterlist.CharacterListFragment
 
 class HousesPageAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm){
+
     override fun getItemCount(): Int {
         return HouseType.values().size
     }

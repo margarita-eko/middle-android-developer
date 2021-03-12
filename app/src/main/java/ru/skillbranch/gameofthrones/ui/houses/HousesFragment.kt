@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.annotation.ColorInt
 import androidx.core.animation.doOnEnd
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import ru.skillbranch.gameofthrones.ui.main.MainActivity
 import ru.skillbranch.gameofthrones.R
+import ru.skillbranch.gameofthrones.data.local.entities.HouseType
 import ru.skillbranch.gameofthrones.databinding.FragmentHousesBinding
 import kotlin.math.hypot
 import kotlin.math.max
@@ -54,7 +56,7 @@ class HousesFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHousesBinding.inflate(inflater,container,false)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_character_list_screen, container, false)
+        //return inflater.inflate(R.layout.fragment_houses, container, false)
     }
 
     override fun onDestroyView() {
@@ -63,10 +65,14 @@ class HousesFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
+//        (requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
         if (currentColor != -1) binding.appbar.setBackgroundColor(currentColor)
 
         binding.viewPager.adapter = charactersPagerAdapter
+        TabLayoutMediator(binding.tabs,binding.viewPager) { tab, position ->
+            tab.text = HouseType.values() [position].title
+        }.attach()
+
         with(binding.tabs){
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
                 override fun onTabUnselected(tab: TabLayout.Tab?) {}

@@ -12,7 +12,7 @@ class CharacterListAdapter(val listener: (CharacterItem) -> Unit) : RecyclerView
 
     var items: List<CharacterItem> = listOf()
 
-    class CharacterItemHolder(val containerView: View, val binding: ItemCharacterlistBinding): RecyclerView.ViewHolder(containerView) {
+    class CharacterItemHolder(containerView: View, val binding: ItemCharacterlistBinding): RecyclerView.ViewHolder(containerView) {
 
         fun bind(
             item: CharacterItem,
@@ -27,7 +27,7 @@ class CharacterListAdapter(val listener: (CharacterItem) -> Unit) : RecyclerView
                 .filter { it.isNotBlank() }
                 .also {
                     binding.tvAliases.text = if (it.isEmpty()) "Information is unknown"
-                    else it.joinToString { " * " }
+                    else it.joinToString(" * ")
                 }
 
             binding.ivAvatar.setImageResource(item.house.icon)
@@ -69,6 +69,11 @@ class CharacterListAdapter(val listener: (CharacterItem) -> Unit) : RecyclerView
             }
 
         }
+
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        items = data
+        diffResult.dispatchUpdatesTo(this)
 
     }
 

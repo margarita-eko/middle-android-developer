@@ -33,17 +33,12 @@ class MainActivity : AppCompatActivity() {
             when (it) {
                 is MainViewModel.LoadResult.Loading -> {
                     navController.navigate(R.id.splashScreenFragment)
-                    binding.swipe.isRefreshing = true
-                    window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                            , WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                 }
                 is MainViewModel.LoadResult.Success -> {
                     navController.navigate(SplashScreenFragmentDirections.actionSplashScreenFragmentToCharacterListScreenFragment())
                 }
                 is MainViewModel.LoadResult.Error -> {
                     Snackbar.make(binding.root,it.errorMessage.toString(),Snackbar.LENGTH_INDEFINITE).show()
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                    binding.swipe.isRefreshing = false
                 }
             }
         })
