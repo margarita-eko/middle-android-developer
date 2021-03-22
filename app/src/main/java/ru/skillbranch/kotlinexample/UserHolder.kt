@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 
 object UserHolder {
 
-
     private val map = mutableMapOf<String,User>()
 
     fun registerUser(
