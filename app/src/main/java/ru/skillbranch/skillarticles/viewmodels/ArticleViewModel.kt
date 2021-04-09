@@ -73,6 +73,11 @@ class ArticleViewModel(private val articleId: String): BaseViewModel<ArticleStat
         }
     }
 
+    fun handelNightMode(){
+        val settings = currentState.toAppSettings()
+        repository.updateSettings(settings.copy(isDarkMode = !settings.isDarkMode))
+    }
+
     // app settings
 
     fun handleUpText(){
