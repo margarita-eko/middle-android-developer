@@ -124,7 +124,7 @@ class RootActivity : AppCompatActivity() {
         with(binding.submenu){
             btnTextUp.setOnClickListener { viewModel.handleUpText() }
             btnTextDown.setOnClickListener { viewModel.handleDownText() }
-            switchMode.setOnClickListener { viewModel.handelNightMode() }
+            switchMode.setOnClickListener { viewModel.handleNightMode() }
         }
     }
 
