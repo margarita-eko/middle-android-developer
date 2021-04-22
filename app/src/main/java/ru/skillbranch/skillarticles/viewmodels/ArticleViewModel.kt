@@ -106,10 +106,10 @@ class ArticleViewModel(private val articleId: String): BaseViewModel<ArticleStat
 
         toggleLike()
 
-        val msg = if (!isLiked) Notify.TextMessage("Mark as liked")
+        val msg = if (!isLiked) Notify.TextMessage("Mark is liked")
         else{
             Notify.ActionMessage(
-                "Don't like it anymore",
+                "Don`t like it anymore",
                 "No, still like it",
                 toggleLike
             )
@@ -120,7 +120,7 @@ class ArticleViewModel(private val articleId: String): BaseViewModel<ArticleStat
 
     override fun handleShare(){
         val msg = "Share is not implemented"
-        notify(Notify.ErrorMessage(msg, "ОК", null))
+        notify(Notify.ErrorMessage(msg, "OK", null))
     }
 
     fun hideMenu(){
@@ -171,7 +171,7 @@ data class ArticleState(
 ){
 
     fun toAppSettings(): AppSettings {
-        return AppSettings(isBigText,isDarkMode)
+        return AppSettings(isDarkMode,isBigText)
     }
 
     fun toArtcilePersonalInfo(): ArticlePersonalInfo {

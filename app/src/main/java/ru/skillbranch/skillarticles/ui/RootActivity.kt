@@ -2,10 +2,9 @@ package ru.skillbranch.skillarticles.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.skillbranch.skillarticles.R
@@ -38,23 +37,6 @@ class RootActivity : AppCompatActivity() {
         viewModel.observeNotifications(this){
             renderNotification(it)
         }
-
-        with (binding.bottombar) {
-            btnLike.setOnClickListener {
-                Snackbar.make(binding.coordinatorContainer, "test", Snackbar.LENGTH_LONG)
-                    .setAnchorView(binding.bottombar)
-                    .show()
-            }
-
-        }
-
-        val switchMode = binding.submenu.switchMode
-        switchMode.setOnClickListener {
-            delegate.localNightMode =
-                if (switchMode.isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-        }
-
-
 
     }
 
@@ -147,12 +129,14 @@ class RootActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val logo = if (binding.toolbar.childCount>2) binding.toolbar.getChildAt(2) as ImageView else null
-        (logo?.layoutParams as? Toolbar.LayoutParams)?.let {
+        logo?.scaleType = ImageView.ScaleType.CENTER_CROP
+        val lp = logo?.layoutParams as? Toolbar.LayoutParams
+        lp?.let {
             it.width = dpToIntPx(40)
             it.height = dpToIntPx(40)
             it.marginEnd =dpToIntPx(16)
             logo.layoutParams = it
         }
-        logo?.scaleType = ImageView.ScaleType.CENTER_CROP
+
     }
 }
