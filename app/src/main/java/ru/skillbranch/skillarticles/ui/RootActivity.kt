@@ -9,11 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
 import kotlinx.android.synthetic.main.layout_bottombar.*
-import kotlinx.android.synthetic.main.layout_bottombar.view.*
 import kotlinx.android.synthetic.main.layout_submenu.*
-import kotlinx.android.synthetic.main.layout_submenu.view.*
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.viewmodels.ArticleState
 import ru.skillbranch.skillarticles.viewmodels.ArticleViewModel
@@ -116,18 +113,16 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun setupBottombar() {
-
-            btn_like.setOnClickListener{
-                viewModel.handleLike()
-            }
-            btn_bookmark.setOnClickListener{
-                viewModel.handleBookmark()
-            }
-            btn_share.setOnClickListener {
-                viewModel.handleShare()
-            }
-            btn_settings.setOnClickListener { viewModel.handleToggleMenu() }
-
+        btn_like.setOnClickListener {
+            viewModel.handleLike()
+        }
+        btn_bookmark.setOnClickListener {
+            viewModel.handleBookmark()
+        }
+        btn_share.setOnClickListener {
+            viewModel.handleShare()
+        }
+        btn_settings.setOnClickListener { viewModel.handleToggleMenu() }
     }
 
     private fun setupToolBar() {
