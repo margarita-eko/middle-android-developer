@@ -25,14 +25,14 @@ class ArticleSubmenu @JvmOverloads constructor(
     var isOpen = false
     private var centerX: Float = context.dpToPx(200)
     private var centerY: Float = context.dpToPx(96)
-    private val binding =
+    /*private val binding =
         LayoutSubmenuBinding.inflate(LayoutInflater.from(context), this, true)
 
     val switchMode get() = binding.switchMode
     val btnTextDown get() = binding.btnTextDown
     val btnTextUp get() = binding.btnTextUp
     val dividerH get() = binding.dividerH
-    val dividerV get() = binding.dividerV
+    val dividerV get() = binding.dividerV*/
 
     init {
         // change to use binding

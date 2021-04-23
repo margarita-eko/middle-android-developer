@@ -15,13 +15,13 @@ class Bottombar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding =
+    /*private val binding =
         LayoutBottombarBinding.inflate(LayoutInflater.from(context), this)
 
     val btnLike get() = binding.btnLike
     val btnBookmark get() = binding.btnBookmark
     val btnSettings get() = binding.btnSettings
-    val btnShare get() = binding.btnShare
+    val btnShare get() = binding.btnShare*/
 
     init {
 

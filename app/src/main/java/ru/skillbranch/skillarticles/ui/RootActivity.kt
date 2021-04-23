@@ -7,6 +7,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.activity_root.*
+import kotlinx.android.synthetic.main.layout_bottombar.*
+import kotlinx.android.synthetic.main.layout_bottombar.view.*
+import kotlinx.android.synthetic.main.layout_submenu.*
+import kotlinx.android.synthetic.main.layout_submenu.view.*
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
@@ -17,13 +22,13 @@ import ru.skillbranch.skillarticles.viewmodels.ViewModelFactory
 
 class RootActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRootBinding
+    //private lateinit var binding: ActivityRootBinding
     private lateinit var viewModel: ArticleViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRootBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        //binding = ActivityRootBinding.inflate(layoutInflater)
+        setContentView(R.layout.activity_root)
         setupToolBar()
         setupBottombar()
         setupSubmenu()
@@ -41,37 +46,37 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun renderUi(data: ArticleState) {
-        with(binding.bottombar){
+
             //bind submenu state
-            btnSettings.isChecked = data.isShowMenu
-            if (data.isShowMenu) binding.submenu.open() else binding.submenu.close()
+            btn_settings.isChecked = data.isShowMenu
+            if (data.isShowMenu) submenu.open() else submenu.close()
 
             //bind article person data
-            btnLike.isChecked = data.isLike
-            btnBookmark.isChecked = data.isBookmark
+            btn_like.isChecked = data.isLike
+            btn_bookmark.isChecked = data.isBookmark
 
-        }
+
 
         //bind submenu views
-        with(binding.submenu){
-            switchMode.isChecked = data.isDarkMode
+
+            switch_mode.isChecked = data.isDarkMode
             delegate.localNightMode = if (data.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             if (data.isBigText){
-                binding.tvTextContent.textSize = 18f
-                btnTextUp.isChecked = true
-                btnTextDown.isChecked = false
+                tv_text_content.textSize = 18f
+                btn_text_up.isChecked = true
+                btn_text_down.isChecked = false
             }else{
-                binding.tvTextContent.textSize = 14f
-                btnTextUp.isChecked = false
-                btnTextDown.isChecked = true
+                tv_text_content.textSize = 14f
+                btn_text_up.isChecked = false
+                btn_text_down.isChecked = true
             }
-        }
+
 
         //bind content
-        binding.tvTextContent.text = if (data.isLoadingContent) "loading" else data.content.first() as String
+        tv_text_content.text = if (data.isLoadingContent) "loading" else data.content.first() as String
 
         //bind toolbar
-        with(binding.toolbar){
+        with(toolbar){
             title = data.title ?: "Skill Articles"
             subtitle = data.category ?: "loading..."
             if (data.categoryIcon != null) logo = getDrawable(data.categoryIcon as Int)
@@ -79,7 +84,7 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun renderNotification(notify: Notify) {
-        val snackbar = Snackbar.make(binding.coordinatorContainer, notify.message, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(coordinator_container, notify.message, Snackbar.LENGTH_LONG)
 
         when(notify){
             is Notify.TextMessage -> {/* nothing */}
@@ -103,32 +108,32 @@ class RootActivity : AppCompatActivity() {
         snackbar.show()
     }
     private fun setupSubmenu() {
-        with(binding.submenu){
-            btnTextUp.setOnClickListener { viewModel.handleUpText() }
-            btnTextDown.setOnClickListener { viewModel.handleDownText() }
-            switchMode.setOnClickListener { viewModel.handleNightMode() }
-        }
+
+            btn_text_up.setOnClickListener { viewModel.handleUpText() }
+            btn_text_down.setOnClickListener { viewModel.handleDownText() }
+            switch_mode.setOnClickListener { viewModel.handleNightMode() }
+
     }
 
     private fun setupBottombar() {
-        with(binding.bottombar){
-            btnLike.setOnClickListener{
+
+            btn_like.setOnClickListener{
                 viewModel.handleLike()
             }
-            btnBookmark.setOnClickListener{
+            btn_bookmark.setOnClickListener{
                 viewModel.handleBookmark()
             }
-            btnShare.setOnClickListener {
+            btn_share.setOnClickListener {
                 viewModel.handleShare()
             }
-            btnSettings.setOnClickListener { viewModel.handleToggleMenu() }
-        }
+            btn_settings.setOnClickListener { viewModel.handleToggleMenu() }
+
     }
 
     private fun setupToolBar() {
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val logo = if (binding.toolbar.childCount>2) binding.toolbar.getChildAt(2) as ImageView else null
+        val logo = if (toolbar.childCount>2) toolbar.getChildAt(2) as ImageView else null
         logo?.scaleType = ImageView.ScaleType.CENTER_CROP
         val lp = logo?.layoutParams as? Toolbar.LayoutParams
         lp?.let {
