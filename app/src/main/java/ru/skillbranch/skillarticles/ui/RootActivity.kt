@@ -20,11 +20,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.text.getSpans
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.shape.ShapePathModel
 import com.google.android.material.snackbar.Snackbar
 import ru.skillbranch.skillarticles.R
-import ru.skillbranch.skillarticles.ui.custom.delegates.AttrValue
-import ru.skillbranch.skillarticles.ui.custom.delegates.viewBinding
+import ru.skillbranch.skillarticles.ui.delegates.AttrValue
+import ru.skillbranch.skillarticles.ui.delegates.viewBinding
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
