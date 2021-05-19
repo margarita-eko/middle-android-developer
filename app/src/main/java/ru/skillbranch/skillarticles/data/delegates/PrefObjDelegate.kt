@@ -11,7 +11,6 @@ import kotlinx.coroutines.runBlocking
 import ru.skillbranch.skillarticles.data.PrefManager
 import ru.skillbranch.skillarticles.data.adapters.JsonAdapter
 import ru.skillbranch.skillarticles.data.adapters.UserJsonAdapter
-import ru.skillbranch.skillarticles.data.local.User
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -42,7 +41,7 @@ class PrefObjDelegate<T>(private val adapter: JsonAdapter<T>, private val custom
                     }
 
                 }
-                return _storedValue!!
+                return _storedValue
             }
 
             override fun setValue(thisRef: PrefManager, property: KProperty<*>, value: T?) {
