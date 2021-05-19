@@ -34,6 +34,7 @@ class PrefObjDelegate<T>(private val adapter: JsonAdapter<T>, private val custom
                         }
                     //sync read (on IO Dispatchers.IO and return on call thread
                     _storedValue = runBlocking(Dispatchers.IO) {
+                        flowValue.first() ?: flowValue.first()
                         adapter.fromJson(flowValue.first() as String)
                     }
 

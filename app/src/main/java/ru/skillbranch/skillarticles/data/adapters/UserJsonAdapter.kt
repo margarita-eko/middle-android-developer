@@ -7,10 +7,10 @@ class UserJsonAdapter() : JsonAdapter<User>{
     override fun fromJson(json: String): User? {
         if (json.isBlank()) return null
         val jsonObj = JSONObject(json)
-        val userMap = mutableMapOf<String, Any>()
+        val userMap = mutableMapOf<String, Any?>()
         User::class.java.declaredFields.forEach {
             if (jsonObj.has(it.name)) {
-                userMap.put(it.name, jsonObj[it.name])
+                userMap.put(it.name, if(jsonObj[it.name] == "null") null else jsonObj[it.name])
             }else{
                 throw error("Invalid format for User saved pref")
             }
@@ -30,10 +30,10 @@ class UserJsonAdapter() : JsonAdapter<User>{
         val jsonObject = JSONObject()
         jsonObject.put("id", obj.id)
         jsonObject.put("name", obj.name)
-        jsonObject.put("avatar", obj.avatar)
+        jsonObject.put("avatar", obj.avatar ?: "null")
         jsonObject.put("rating", obj.rating)
         jsonObject.put("respect", obj.respect)
-        jsonObject.put("about", obj.about)
+        jsonObject.put("about", obj.about ?: "null")
         return jsonObject.toString()
     }
 }
