@@ -1,6 +1,7 @@
 package ru.skillbranch.skillarticles.extensions
 
 import android.content.Context
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -23,6 +24,11 @@ fun Context.dpToIntPx(dp: Int): Int {
     ).toInt()
 }
 
+fun Context.attrValue(res: Int): Int {
+    val typedValue = TypedValue()
+    this.theme.resolveAttribute(res, typedValue,true)
+    return typedValue.data
+}
 val Context.isNetworkAvailable: Boolean
     get() {
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
