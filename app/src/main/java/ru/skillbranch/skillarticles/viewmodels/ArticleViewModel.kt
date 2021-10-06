@@ -13,7 +13,9 @@ import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.asMap
 import ru.skillbranch.skillarticles.extensions.format
 import ru.skillbranch.skillarticles.extensions.indexesOf
-import ru.skillbranch.skillarticles.markdown.MarkdownParser
+import ru.skillbranch.skillarticles.repositories.MarkdownElement
+import ru.skillbranch.skillarticles.repositories.MarkdownParser
+import ru.skillbranch.skillarticles.repositories.clearContent
 
 class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle), IArticleViewModel {
 
@@ -71,7 +73,7 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         return repository.getArticle(articleId)
     }
 
-    override fun getArticleContent(): LiveData<String?> {
+    override fun getArticleContent(): LiveData<List<MarkdownElement>?> {
         return repository.loadArticleContent(articleId)
     }
 
@@ -148,7 +150,8 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     override fun handleSearch(query: String?){
         query ?: return
 
-        if (clearContent==null) clearContent=MarkdownParser.clear(currentState.content)
+        if (clearContent==null && currentState.content.isNotEmpty())
+            clearContent = currentState.content.clearContent()
 
         val result = clearContent.indexesOf(query)
             .map { it to it + query.length }
@@ -172,11 +175,17 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         updateState { it.copy(searchPosition = it.searchPosition.inc()) }
     }
 
+    fun handleCopyCode() {
+        notify(Notify.TextMessage("Code copied to clipboard"))
+    }
+
     companion object{
         private const val TAG = "ArticleViewModel"
     }
 
 }
+
+
 
 data class ArticleState(
     val isAuth: Boolean = false,
@@ -198,7 +207,7 @@ data class ArticleState(
     val date: String? = null,
     val author: Any? = null,
     val poster: String? = null,
-    val content: String = "Loading",
+    val content: List<MarkdownElement> = emptyList(),
     val reviews: List<Any> = emptyList()
 
 ): VMState{
@@ -212,7 +221,7 @@ data class ArticleState(
     }
 
     override fun toBundle(): Bundle {
-        val map = copy(content = "Loading", isLoadingContent = true)
+        val map = copy(content = emptyList(), isLoadingContent = true)
             .asMap()
             .toList()
             .toTypedArray()
@@ -241,7 +250,7 @@ data class ArticleState(
             date = map["date"] as String?,
             author = map["author"] as Any?,
             poster = map["poster"] as String?,
-            content = map["content"] as String,
+            content = map["content"] as List<MarkdownElement>,
             reviews = map["reviews"] as List<Any>,
         )
     }

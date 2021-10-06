@@ -1,16 +1,19 @@
 package ru.skillbranch.skillarticles.ui.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Checkable
 import android.widget.ImageView
 
+@SuppressLint("AppCompatCustomView")
 class CheckableImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : ImageView(context, attrs, defStyleAttr), Checkable, View.OnClickListener{
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0,
+) : ImageView(context, attrs, defStyleAttr, defStyleRes), Checkable, View.OnClickListener{
     private var checked = false
 
     companion object {

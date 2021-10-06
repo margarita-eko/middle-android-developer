@@ -1,14 +1,20 @@
 package ru.skillbranch.skillarticles.data.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import ru.skillbranch.skillarticles.data.*
+import ru.skillbranch.skillarticles.repositories.MarkdownElement
+import ru.skillbranch.skillarticles.repositories.MarkdownParser
 
 object ArticleRepository {
     private val local = LocalDataHolder
     private val network = NetworkDataHolder
 
-    fun loadArticleContent(articleId: String): LiveData<String?> {
-        return network.loadArticleContent(articleId) //5s delay from network
+    fun loadArticleContent(articleId: String): LiveData<List<MarkdownElement>?> {
+        return network.loadArticleContent(articleId)
+            .map { str -> str?.let {
+                MarkdownParser.parse(it)
+            }} // Transformations.map extension for Live Data
     }
     fun getArticle(articleId: String): LiveData<ArticleData?> {
         return local.findArticle(articleId) //2s delay from db

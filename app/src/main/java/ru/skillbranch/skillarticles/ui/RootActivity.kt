@@ -1,5 +1,8 @@
 package ru.skillbranch.skillarticles.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -7,7 +10,7 @@ import android.text.Selection
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
-import android.text.method.ScrollingMovementMethod
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -28,9 +31,9 @@ import ru.skillbranch.skillarticles.ui.delegates.viewBinding
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
-import ru.skillbranch.skillarticles.markdown.MarkdownBuilder
-import ru.skillbranch.skillarticles.ui.custom.SearchFocusSpan
-import ru.skillbranch.skillarticles.ui.custom.SearchSpan
+import ru.skillbranch.skillarticles.ui.custom.markdown.MarkdownBuilder
+import ru.skillbranch.skillarticles.ui.custom.spans.SearchFocusSpan
+import ru.skillbranch.skillarticles.ui.custom.spans.SearchSpan
 import ru.skillbranch.skillarticles.viewmodels.*
 
 class RootActivity : AppCompatActivity(), IArticleView {
@@ -42,7 +45,8 @@ class RootActivity : AppCompatActivity(), IArticleView {
     private val vb: ActivityRootBinding by viewBinding (ActivityRootBinding::inflate)
 
     private val vbBottombar
-        get() = vb.bottombar.binding
+        //get() = vb.bottombar.binding
+        get() = vb.bottombar
     private val vbSubmenu
         get() = vb.submenu.binding
     private lateinit var searchView: SearchView
@@ -58,6 +62,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
         setupToolbar()
         setupBottombar()
         setupSubmenu()
+        setupCopyListener()
 
         viewModel.observeState(this, ::renderUi)
         viewModel.observedSubState(this,ArticleState::toBottombarData,::renderBotombar)
@@ -125,15 +130,8 @@ class RootActivity : AppCompatActivity(), IArticleView {
 
         with (vb.tvTextContent) {
             textSize = if (data.isBigText) 18f else 14f
-            movementMethod = LinkMovementMethod() // for scroll and handle link click
-            val content = if (data.isLoadingContent) "loading" else data.content.first()
-            /*if (text.toString() == content) return@with
-            setText(content,TextView.BufferType.SPANNABLE)*/
-            MarkdownBuilder(context)
-                .markdownToSpan(data.content)
-                .run {
-                    setText(this,TextView.BufferType.SPANNABLE)
-                }
+            isLoading = data.content.isEmpty()
+            setContent(data.content)
         }
 
         with(vb.toolbar){
@@ -146,7 +144,7 @@ class RootActivity : AppCompatActivity(), IArticleView {
 
         if (data.isSearch){
             renderSearchResult(data.searchResults)
-            renderSearchPosition(data.searchPosition)
+            renderSearchPosition(data.searchPosition, data.searchResults )
         }else{
             clearSearchResult()
         }
@@ -169,7 +167,9 @@ class RootActivity : AppCompatActivity(), IArticleView {
     }
 
     override fun renderSearchResult(searchResult: List<Pair<Int, Int>>) {
-        val content = vb.tvTextContent.text as Spannable
+
+        vb.tvTextContent.renderSearchResult(searchResult)
+        /*val content = vb.tvTextContent.text as Spannable
 
         clearSearchResult()
 
@@ -180,11 +180,14 @@ class RootActivity : AppCompatActivity(), IArticleView {
                 end,
                 SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-        }
+        }*/
     }
 
-    override fun renderSearchPosition(searchPosition: Int) {
-        val content =vb.tvTextContent.text as Spannable
+    override fun renderSearchPosition(searchPosition: Int, searchResult: List<Pair<Int, Int>>) {
+
+        vb.tvTextContent.renderSearchPosition(searchResult.getOrNull(searchPosition))
+
+        /*val content =vb.tvTextContent.text as Spannable
         val spans = content.getSpans<SearchSpan>()
 
         //remove old search focus span
@@ -205,14 +208,12 @@ class RootActivity : AppCompatActivity(), IArticleView {
                 content.getSpanEnd(result),
                 SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-        }
+        }*/
 
     }
 
     override fun clearSearchResult() {
-        val content = vb.tvTextContent.text as Spannable
-        content.getSpans<SearchSpan>()
-            .forEach { content.removeSpan(it) }
+       vb.tvTextContent.clearSearchResult()
     }
 
     override fun showSearchBar(resultsCount: Int, searchPosition: Int) {
@@ -228,6 +229,15 @@ class RootActivity : AppCompatActivity(), IArticleView {
             setSearchState(false)
         }
         vb.scroll.setMarginOptionally(bottom = dpToIntPx(0))
+    }
+
+    override fun setupCopyListener() {
+        vb.tvTextContent.setCopyListener { copy ->
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied code", copy)
+            clipboard.setPrimaryClip(clip)
+            viewModel.handleCopyCode()
+        }
     }
 
     private fun renderNotification(notify: Notify) {

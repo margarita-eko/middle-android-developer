@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.markdown.spans
+package ru.skillbranch.skillarticles.ui.custom.spans
 
 import android.graphics.Canvas
 import android.graphics.DashPathEffect
@@ -38,16 +38,17 @@ class IconLinkSpan(
         paint: Paint
     ) {
         val textStart = x + iconSize + gap
+        val linkBottom = y + paint.descent()//bottom.toFloat() - lineSpacing
 
         paint.forLine {
             path.reset()
-            path.moveTo(textStart, bottom.toFloat())
-            path.lineTo(textStart + textWidth,bottom.toFloat())
+            path.moveTo(textStart, linkBottom)
+            path.lineTo(textStart + textWidth,linkBottom)
             canvas.drawPath(path,paint)
         }
 
         canvas.save() // save canvas position
-        val transY  = (bottom - linkDrawable.bounds.bottom.toFloat() ) //translate icon to line position
+        val transY  = (linkBottom - linkDrawable.bounds.bottom.toFloat()) //translate icon to line position
         canvas.translate(x + gap/2f, transY)
         linkDrawable.draw(canvas)
         canvas.restore()

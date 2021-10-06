@@ -19,3 +19,12 @@ fun View.setMarginOptionally(
         this.requestLayout()
     }
 }
+
+fun View.setPaddingOptionally(
+    left:Int = marginLeft,
+    top : Int = marginTop,
+    right : Int = marginRight,
+    bottom : Int = marginBottom
+){
+    this.setPadding(left,top,right,bottom)
+}
