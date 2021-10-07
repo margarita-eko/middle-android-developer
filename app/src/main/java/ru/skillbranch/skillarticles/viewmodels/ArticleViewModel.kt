@@ -1,7 +1,6 @@
 package ru.skillbranch.skillarticles.viewmodels
 
 import android.os.Bundle
-import android.transition.ArcMotion
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
@@ -13,9 +12,8 @@ import ru.skillbranch.skillarticles.data.repositories.ArticleRepository
 import ru.skillbranch.skillarticles.extensions.asMap
 import ru.skillbranch.skillarticles.extensions.format
 import ru.skillbranch.skillarticles.extensions.indexesOf
-import ru.skillbranch.skillarticles.repositories.MarkdownElement
-import ru.skillbranch.skillarticles.repositories.MarkdownParser
-import ru.skillbranch.skillarticles.repositories.clearContent
+import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
+import ru.skillbranch.skillarticles.data.repositories.clearContent
 
 class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle), IArticleViewModel {
 

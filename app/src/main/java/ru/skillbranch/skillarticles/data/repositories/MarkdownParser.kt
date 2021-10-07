@@ -1,4 +1,4 @@
-package ru.skillbranch.skillarticles.repositories
+package ru.skillbranch.skillarticles.data.repositories
 
 import java.lang.StringBuilder
 import java.util.*
@@ -102,7 +102,7 @@ object MarkdownParser {
 
             //if something is found then everything before - TEXT
             if (lastStartIndex < startIndex) {
-                parents.add(Element.Text(string.subSequence(lastStartIndex,startIndex)))
+                parents.add(Element.Text(string.subSequence(lastStartIndex, startIndex)))
             }
 
             //found text
@@ -144,7 +144,7 @@ object MarkdownParser {
                     //text without "{#} "
                     text = string.subSequence(startIndex.plus(level.inc()), endIndex)
 
-                    val element = Element.Header(level,text)
+                    val element = Element.Header(level, text)
                     parents.add(element)
                     lastStartIndex = endIndex
                 }
@@ -214,7 +214,7 @@ object MarkdownParser {
                     text = string.subSequence(startIndex, endIndex)
 
                     val (title: kotlin.String, link: kotlin.String) = "\\[(.*)]\\((.*)\\)".toRegex().find(text)!!.destructured
-                    val element = Element.Link(link,title)
+                    val element = Element.Link(link, title)
                     parents.add(element)
                     lastStartIndex = endIndex
                 }
@@ -257,7 +257,11 @@ object MarkdownParser {
                     val url = "(^.*?(?=\\s))|(^.*?$)".toRegex().find(imgInfo)!!.groupValues.first()
                     val titleSeq = "\\s.*?$".toRegex().find(imgInfo)?.groupValues?.first()
                     val title = (titleSeq ?: "").replace("\"","").trim()
-                    val element = Element.Image(url,if (alt.isNullOrEmpty() ) null else alt,title as CharSequence)
+                    val element = Element.Image(
+                        url,
+                        if (alt.isNullOrEmpty()) null else alt,
+                        title as CharSequence
+                    )
                     parents.add(element)
                     lastStartIndex = endIndex
                 }
@@ -316,65 +320,65 @@ sealed class Element(){
     data class Text(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class UnorderedListItem(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Header(
         val level: Int = 1,
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Quote(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Italic(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Bold(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Strike(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Rule(
         override val text: CharSequence= " ", //for insert span
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class InlineCode(
         override val text: CharSequence= " ", //for insert span
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Link(
         val link: String,
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class OrderedListItem(
         val order: String,
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class BlockCode(
         override val text: CharSequence,
         override val elements: List<Element> = emptyList()
-    ):Element()
+    ): Element()
 
     data class Image(
         val url: String,

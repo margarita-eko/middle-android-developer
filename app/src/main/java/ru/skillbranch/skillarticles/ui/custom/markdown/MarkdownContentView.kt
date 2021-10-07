@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.core.view.children
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.setPaddingOptionally
-import ru.skillbranch.skillarticles.repositories.MarkdownElement
+import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
+import ru.skillbranch.skillarticles.extensions.groupByBounds
 import kotlin.properties.Delegates
 
 class MarkdownContentView @JvmOverloads constructor(
@@ -83,7 +84,8 @@ class MarkdownContentView @JvmOverloads constructor(
                     }
 
 
-                    MarkdownBuilder(context).markdownToSpan(it)
+                    MarkdownBuilder(context)
+                        .markdownToSpan(it)
                         .run {
                             tv.setText(this, TextView.BufferType.SPANNABLE)
                         }
@@ -163,47 +165,5 @@ class MarkdownContentView @JvmOverloads constructor(
     fun setCopyListener(listener: (String) -> Unit) {
         copyListener = listener
     }
-}
-
-private fun List<Pair<Int,Int>>.groupByBounds(bounds: List<Pair<Int,Int>>): List<List<Pair<Int,Int>>> {
-    val listByBounds: MutableList<MutableList<Pair<Int,Int>>> = mutableListOf()
-    /*this.forEach { span ->
-        bounds.forEach { bound ->
-            if (span.first in bound.first..bound.second){
-                val index = bounds.indexOf(bound)
-                var el = listByBounds.getOrNull(index)
-                if (el == null) {
-                    val elList = mutableListOf<Pair<Int,Int>>()
-                    elList.add(span)
-                    listByBounds.add(index,elList)
-                }else{
-                    el.add(span)
-                }
-            }
-        }
-    }*/
-    var searchIndexStart = 0
-    bounds.forEach { curBound ->
-        val listResults: MutableList<Pair<Int,Int>> = mutableListOf()
-        for (i in searchIndexStart until this.size - 1) {
-            val span = this[i]
-            if (span.first > curBound.second){
-                searchIndexStart = i
-                break
-            }
-            if (span.first in curBound.first..curBound.second
-                && span.second in curBound.first..curBound.second) {
-                listResults.add(span)
-            }
-        }
-        /*this.forEach { span->
-            if (span.first in curBound.first..curBound.second
-                && span.second in curBound.first..curBound.second) {
-                listResults.add(span)
-            }
-        }*/
-        listByBounds.add(listResults)
-    }
-    return listByBounds
 }
 		

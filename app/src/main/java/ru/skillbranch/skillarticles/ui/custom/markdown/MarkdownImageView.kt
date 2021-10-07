@@ -184,9 +184,9 @@ class MarkdownImageView private constructor(
 
         tvAlt?.layout(
             left,
-            tvTitle.measuredHeight - (tvAlt?.measuredHeight ?: 0),
+            ivImage.measuredHeight - (tvAlt?.measuredHeight ?: 0),
             right,
-            tvTitle.measuredHeight
+            ivImage.measuredHeight
         )
     }
 

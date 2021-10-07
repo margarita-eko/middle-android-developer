@@ -103,7 +103,7 @@ class Bottombar @JvmOverloads constructor(
     public override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         Log.d("BottomBar", "onMeasure")
 
-        val height = getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
+        val height = getDefaultSize(iconSize, heightMeasureSpec)
         val width = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
         children.forEach {
@@ -289,7 +289,7 @@ class Bottombar @JvmOverloads constructor(
 
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             Log.d("SearchBar", "OnMeasure")
-            val height = getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
+            val height = getDefaultSize(iconSize, heightMeasureSpec)
             val width = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
             children.forEach {
