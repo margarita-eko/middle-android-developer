@@ -248,7 +248,8 @@ class Bottombar @JvmOverloads constructor(
         }
         internal val tvSearchResult: TextView = TextView(context).apply {
             setTextColor(iconColor)
-            setPadding(context.dpToIntPx(16))
+            text = "Not found"
+            setPadding(0,0,context.dpToIntPx(16),0)
         }
         internal val btnResultDown: AppCompatImageView = bottomIconAppCompatImageView(R.drawable.ic_keyboard_arrow_down_black_24dp).apply {
             setColorFilter(iconColor)
@@ -289,7 +290,7 @@ class Bottombar @JvmOverloads constructor(
 
         override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
             Log.d("SearchBar", "OnMeasure")
-            val height = getDefaultSize(iconSize, heightMeasureSpec)
+            val height = getDefaultSize(suggestedMinimumHeight, heightMeasureSpec)
             val width = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
 
             children.forEach {
@@ -308,15 +309,21 @@ class Bottombar @JvmOverloads constructor(
             var usedWidth = paddingLeft
             val top = paddingTop
 
-            leftButtonsList.forEach {
-                it.layout(
-                    usedWidth ,
-                    top,
-                    usedWidth + it.measuredWidth,
-                    top + it.measuredHeight
-                )
-                usedWidth += it.measuredWidth
-            }
+            btnSearchClose.layout(
+                usedWidth,
+                top,
+                usedWidth + btnSearchClose.measuredWidth,
+                top + btnSearchClose.measuredHeight
+            )
+
+            usedWidth += btnSearchClose.measuredWidth
+
+            tvSearchResult.layout(
+                usedWidth,
+                (this.measuredHeight - tvSearchResult.measuredHeight)/2,
+                usedWidth + tvSearchResult.measuredWidth,
+                this.measuredHeight - (this.measuredHeight - tvSearchResult.measuredHeight)/2
+            )
 
             usedWidth = r - iconPadding
             rightButtonsList.forEach {

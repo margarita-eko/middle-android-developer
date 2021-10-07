@@ -5,7 +5,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.math.MathUtils
 import androidx.core.view.ViewCompat
 import ru.skillbranch.skillarticles.ui.custom.Bottombar
-import ru.skillbranch.skillarticles.ui.custom.BottombarView
 
 
 class BottombarBehavior : CoordinatorLayout.Behavior<Bottombar>() {
