@@ -4,16 +4,16 @@ fun String?.indexesOf(
     substr: String,
     ignoreCase: Boolean = true
 ): List<Int> {
-    if (this == null || substr.isBlank()) return emptyList()
-    var startIndex = 0
     val result = mutableListOf<Int>()
-    var currentSearchResult: Int
-    do {
-        currentSearchResult = this.indexOf(substr, startIndex, ignoreCase)
-        if (currentSearchResult != -1) {
-            result.add(currentSearchResult)
+    if (!this.isNullOrEmpty() && substr.isNotEmpty()) {
+        var index = 0
+        while (index > -1) {
+            index = indexOf(substr, index, ignoreCase)
+            if (index > -1) {
+                result.add(index)
+                index += substr.length
+            }
         }
-        startIndex = currentSearchResult + 1
-    } while (currentSearchResult != -1)
+    }
     return result
 }

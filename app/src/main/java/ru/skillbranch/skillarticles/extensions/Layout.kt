@@ -2,12 +2,18 @@ package ru.skillbranch.skillarticles.extensions
 
 import android.text.Layout
 
-fun Layout.getLineHeight(line: Int): Int{
-    return getLineTop(line.inc()) - getLineBottom(line)
+/**
+ * Get the line height of a line.
+ */
+fun Layout.getLineHeight(line: Int): Int {
+    return getLineTop(line.inc()) - getLineTop(line)
 }
 
-fun Layout.getLineTopWithoutPadding(line: Int): Int{
-   var lineTop = getLineTop(line)
+/**
+ * Returns the top of the Layout after removing the extra padding applied by  the Layout.
+ */
+fun Layout.getLineTopWithoutPadding(line: Int): Int {
+    var lineTop = getLineTop(line)
     if (line == 0) {
         lineTop -= topPadding
     }
@@ -15,32 +21,37 @@ fun Layout.getLineTopWithoutPadding(line: Int): Int{
     return lineTop
 }
 
-fun Layout.getLineBottomWithoutPadding(line: Int): Int{
+/**
+ * Returns the bottom of the Layout after removing the extra padding applied by the Layout.
+ */
+fun Layout.getLineBottomWithoutPadding(line: Int): Int {
     var lineBottom = getLineBottomWithoutSpacing(line)
-    if (line == lineCount.dec()){
-        lineBottom -=bottomPadding
+    if (line == lineCount.dec()) {
+        lineBottom -= bottomPadding
     }
+
     return lineBottom
 }
 
-private fun Layout.getLineBottomWithoutSpacing(line: Int): Int {
+/**
+ * Get the line bottom discarding the line spacing added.
+ */
+fun Layout.getLineBottomWithoutSpacing(line: Int): Int {
     val lineBottom = getLineBottom(line)
     val isLastLine = line == lineCount.dec()
     val hasLineSpacing = spacingAdd != 0f
 
     val nextLineIsLast = line == lineCount - 2
 
-    val onlyWhiteSpaceAfter = if (nextLineIsLast){
-        val start = getLineStart(line+1)
+    val onlyWhitespaceIsAfter = if (nextLineIsLast) {
+        val start = getLineStart(line + 1)
         val lastVisible = getLineVisibleEnd(line + 1)
         start == lastVisible
-    }else{
-        false
-    }
+    } else false
 
-    return if (!hasLineSpacing || isLastLine || onlyWhiteSpaceAfter) {
+    return if (!hasLineSpacing || isLastLine || onlyWhitespaceIsAfter) {
         lineBottom
-    }else{
+    } else {
         lineBottom - spacingAdd.toInt()
     }
 }

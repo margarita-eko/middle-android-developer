@@ -2,16 +2,21 @@ package ru.skillbranch.skillarticles.viewmodels
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.IdRes
 import androidx.annotation.UiThread
 import androidx.annotation.VisibleForTesting
 import androidx.core.os.bundleOf
 import androidx.lifecycle.*
+import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigator
 import androidx.savedstate.SavedStateRegistryOwner
 import java.io.Serializable
 
 abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: SavedStateHandle) : ViewModel() where T : VMState{
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     val notifications = MutableLiveData<Event<Notify>>()
+    val navigation = MutableLiveData<Event<NavCommand>>()
 
     /***
      * Инициализация начального состояния аргументом конструктоа, и объявления состояния как
@@ -67,7 +72,7 @@ abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: Save
     /***
      * вспомогательная функция позволяющая наблюдать за измеениями частей стейта ViewModel
      */
-    fun <D> observedSubState(owner: LifecycleOwner, transform: (T) -> D, onChanged: (subState: D) -> Unit){
+    fun <D> observeSubState(owner: LifecycleOwner, transform: (T) -> D, onChanged: (subState: D) -> Unit){
         state
             .map(transform) //трансформируем весь стейт в необходимую модель substate
             .distinctUntilChanged() //отфильтровываем и пропускаем дальше только, если значение изменилось
@@ -82,6 +87,20 @@ abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: Save
     fun observeNotifications(owner: LifecycleOwner, onNotify: (notification: Notify) -> Unit) {
         notifications.observe(owner, EventObserver { onNotify(it) })
     }
+
+    fun observeNavigation(owner: LifecycleOwner, onNavigate: (navCommands: NavCommand) -> Unit) {
+        navigation.observe(owner,EventObserver{onNavigate(it)})
+    }
+
+    /**
+     * Важно изменять имеено в основном потоке
+     */
+
+    @UiThread
+    protected fun navigate(cmd: NavCommand){
+        navigation.value = Event(cmd)
+    }
+
 
     /***
      * функция принимает источник данных и лямбда выражение обрабатывающее поступающие данные источника
@@ -169,7 +188,29 @@ sealed class Notify(val message: String) {
     ) : Notify(msg)
 }
 
-public interface VMState : Serializable{
-    fun toBundle() : Bundle
-    fun fromBundle(bundle: Bundle): VMState?
+sealed class NavCommand{
+    data class Builder(
+        @IdRes val destination : Int,
+        val args: Bundle? = null,
+        val options: NavOptions? = null,
+        val extras: Navigator.Extras? = null
+    ) : NavCommand()
+
+    data class Action(val action: NavDirections) : NavCommand()
+    data class TopLevel(
+        @IdRes val destination: Int,
+        val options: NavOptions?
+    ) : NavCommand()
+}
+
+public interface VMState : Serializable {
+    open fun toBundle() : Bundle{
+        /* overwrite if needed */
+        return bundleOf()
+    }
+
+    open fun fromBundle(bundle: Bundle): VMState? {
+        /* overwrite if needed */
+        return null
+    }
 }

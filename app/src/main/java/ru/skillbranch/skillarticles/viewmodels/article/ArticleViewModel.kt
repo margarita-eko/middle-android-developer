@@ -1,6 +1,7 @@
 package ru.skillbranch.skillarticles.viewmodels
 
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
@@ -206,7 +207,8 @@ data class ArticleState(
     val author: Any? = null,
     val poster: String? = null,
     val content: List<MarkdownElement> = emptyList(),
-    val reviews: List<Any> = emptyList()
+    val reviews: List<Any> = emptyList(),
+    val message: String? = null
 
 ): VMState{
 
