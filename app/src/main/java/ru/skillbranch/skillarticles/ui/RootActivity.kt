@@ -21,15 +21,16 @@ import ru.skillbranch.skillarticles.viewmodels.*
 
 class RootActivity : AppCompatActivity() {
 
-    //private lateinit var viewModel: RootViewModel
-
     private val viewModel: RootViewModel by viewModels()
     lateinit var viewBinding: ActivityRootBinding
     private lateinit var navController: NavController
 
+    init {
+        Log.d("RootActivity", "INIT root activity")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
-        //viewModel = ViewModelProvider(this).get(ru.skillbranch.skillarticles.viewmodels.RootViewModel::class.java)
         viewBinding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         setSupportActionBar(viewBinding.toolbar)

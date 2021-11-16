@@ -84,7 +84,7 @@
         <item name="colorControlActivated">@color/color_accent</item>
         <item name="colorControlHighlight">@color/color_gray</item>
         <item name="android:textColorPrimary">?attr/colorOnSurface</item>
-        <item name="android:textAppearance">@style/TextStyle</item>
+        <!--<item name="android:textAppearance">@style/TextStyle</item>-->
     </style>
 
 </resources>

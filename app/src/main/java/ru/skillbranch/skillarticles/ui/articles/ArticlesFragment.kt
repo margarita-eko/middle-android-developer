@@ -1,6 +1,5 @@
 package ru.skillbranch.skillarticles.ui.articles
 
-import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
