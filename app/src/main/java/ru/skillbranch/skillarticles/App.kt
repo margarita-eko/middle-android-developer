@@ -2,6 +2,7 @@ package ru.skillbranch.skillarticles
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import ru.skillbranch.skillarticles.data.PrefManager
 

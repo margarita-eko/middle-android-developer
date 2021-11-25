@@ -29,7 +29,6 @@ abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: Save
             if (it is Bundle) initState.fromBundle(it) as? T
             else it as T
         }
-        Log.e("BaseViewModel", "handle restored state $restoredState")
         value =  restoredState ?: initState
     }
 

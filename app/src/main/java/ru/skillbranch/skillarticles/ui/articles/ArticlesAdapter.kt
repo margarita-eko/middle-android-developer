@@ -60,7 +60,7 @@ class ArticleVH(private val binding: ItemArticleBinding): RecyclerView.ViewHolde
         onClick: (ArticleItem) -> Unit,
         onToggleBookmark: (ArticleItem, Boolean) -> Unit
     ){
-        //val logoSize: Int by lazy { binding.root.dpToIntPx(40) }
+        val logoSize: Int by lazy { binding.root.dpToIntPx(40) }
 
         with(binding){
             tvAuthor.text = item.author
@@ -71,8 +71,9 @@ class ArticleVH(private val binding: ItemArticleBinding): RecyclerView.ViewHolde
             tvLikesCount.text = item.likeCount.toString()
             tvReadDuration.text = item.readDuration.toString()
 
+            root.setOnClickListener { onClick(item) }
 
-            /*Glide.with(binding.root)
+            Glide.with(binding.root)
                 .load(item.categoryIcon)
                 .placeholder(R.drawable.logo_placeholder)
                 .apply(RequestOptions.circleCropTransform())
@@ -83,7 +84,7 @@ class ArticleVH(private val binding: ItemArticleBinding): RecyclerView.ViewHolde
                 .load(item.poster)
                 .placeholder(R.drawable.poster_placeholder)
                 .transform(CenterCrop())
-                .into(ivPoster)*/
+                .into(ivPoster)
         }
     }
 }

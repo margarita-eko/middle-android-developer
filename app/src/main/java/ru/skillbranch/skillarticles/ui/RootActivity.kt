@@ -16,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
 import ru.skillbranch.skillarticles.R
+import ru.skillbranch.skillarticles.databinding.ActivityRoot2Binding
 import ru.skillbranch.skillarticles.databinding.ActivityRootBinding
 import ru.skillbranch.skillarticles.viewmodels.*
 
@@ -25,12 +26,10 @@ class RootActivity : AppCompatActivity() {
     lateinit var viewBinding: ActivityRootBinding
     private lateinit var navController: NavController
 
-    init {
-        Log.d("RootActivity", "INIT root activity")
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("RootActivity", "OnCreate root activity")
         viewBinding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
         setSupportActionBar(viewBinding.toolbar)
@@ -57,7 +56,7 @@ class RootActivity : AppCompatActivity() {
         viewModel.observeNavigation(this, ::handleNavigation)
 
         navController.addOnDestinationChangedListener{_, destination, args ->
-            Log.e("RootActivity", "change destination $destination")
+            Log.d("RootActivity", "change destination $destination")
             viewBinding.navView.menu.forEach {  item ->
                 if (destination.matchDestination(item.itemId)){
                     item.isChecked = true
