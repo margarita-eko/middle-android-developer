@@ -1,4 +1,8 @@
 package ru.skillbranch.skillarticles.ui.profile
 
-class ProfileFragment {
+import androidx.fragment.app.Fragment
+
+class ProfileFragment : Fragment() {
+
+
 }

@@ -1,4 +1,6 @@
 package ru.skillbranch.skillarticles.ui.bookmarks
 
-class BookmarkFragment {
+import androidx.fragment.app.Fragment
+
+class BookmarkFragment : Fragment() {
 }

@@ -42,7 +42,7 @@ abstract class BaseFragment<S, T : BaseViewModel<S>, B : ViewBinding>(@LayoutRes
         requireActivity().lifecycle.addObserver(this)
         viewModel.observeNotifications(root, root::renderNotification)
         viewModel.observeNavigation(root, root::handleNavigation)
-        viewModel.observeState(root, ::renderUi)
+        viewModel.observeState(viewLifecycleOwner, ::renderUi)
 
         observeViewModelData()
     }
@@ -61,6 +61,8 @@ abstract class BaseFragment<S, T : BaseViewModel<S>, B : ViewBinding>(@LayoutRes
     private fun activityInflated(){
         //show appbar if hidden due to scroll behavior
         root.viewBinding.appbar.setExpanded(true, true)
+        root.viewBinding.toolbar.logo = null // remove glitch destroy view -> more clear toolbar logic
+        root.viewBinding.toolbar.subtitle = null
         setupActivityViews()
     }
 

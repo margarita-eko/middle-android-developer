@@ -3,12 +3,14 @@ package ru.skillbranch.skillarticles.ui.article
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
+import android.text.Editable
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatImageView
@@ -25,6 +27,7 @@ import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.FragmentArticleBinding
 import ru.skillbranch.skillarticles.extensions.dpToIntPx
 import ru.skillbranch.skillarticles.extensions.format
+import ru.skillbranch.skillarticles.extensions.hideKeyboard
 import ru.skillbranch.skillarticles.extensions.setMarginOptionally
 import ru.skillbranch.skillarticles.ui.BaseFragment
 import ru.skillbranch.skillarticles.ui.custom.ArticleSubmenu
@@ -69,6 +72,14 @@ class ArticleFragment : BaseFragment<ArticleState, ArticleViewModel, FragmentArt
             tvTitle.text = args.title
             tvAuthor.text = args.author
             tvDate.text = args.date.format()
+
+            wrapComments.editText?.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    onClickMessageSend()
+                    requireContext().hideKeyboard(root)
+                }
+                return@setOnEditorActionListener true
+            }
         }
     }
 
@@ -279,7 +290,7 @@ class ArticleFragment : BaseFragment<ArticleState, ArticleViewModel, FragmentArt
     }
 
     override fun onClickMessageSend() {
-        TODO("Not yet implemented")
+        viewModel.handleSendComment()
     }
 
 }

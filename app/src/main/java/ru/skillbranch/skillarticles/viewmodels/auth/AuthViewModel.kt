@@ -39,14 +39,14 @@ class AuthViewModel(savedStateHandle: SavedStateHandle) : BaseViewModel<AuthStat
         repository.login(login, password)
         navigate(NavCommand.Action(MainFlowDirections.finishLogin()))
         intentDestination?.let {
-            if (RootViewModel.privateDestinations.contains(it)){
+            //if (RootViewModel.privateDestinations.contains(it)){
                 val options = NavOptions.Builder()
                     .setEnterAnim(R.animator.nav_default_enter_anim)
                     .setExitAnim(R.animator.nav_default_exit_anim)
                     .setPopEnterAnim(R.animator.nav_default_pop_enter_anim)
                     .setPopExitAnim(R.animator.nav_default_pop_exit_anim)
                 navigate(NavCommand.Builder(it, options = options.build()))
-            }
+            //}
         }
     }
 

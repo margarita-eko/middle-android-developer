@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.text.style.ReplacementSpan
 import androidx.annotation.VisibleForTesting
+import ru.skillbranch.skillarticles.R
 
 class UnderlineSpan(
     private val underlineColor: Int,
@@ -27,7 +28,19 @@ class UnderlineSpan(
         bottom: Int,
         paint: Paint
     ) {
-       //TODO implement me
+        val bottom = y + paint.descent()//bottom.toFloat() - lineSpacing
+
+        paint.forLine {
+            path.reset()
+            path.moveTo(x, bottom)
+            path.lineTo(x + textWidth, bottom)
+            canvas.drawPath(path,paint)
+        }
+
+        paint.forText {
+            canvas.drawText(text,start,end,x,y.toFloat(),paint)
+        }
+
     }
 
 
@@ -38,12 +51,31 @@ class UnderlineSpan(
         end: Int,
         fm: Paint.FontMetricsInt?
     ): Int {
-        //TODO implement me
-        return 0
+        textWidth = paint.measureText(text.toString(),start, end).toInt()
+        return textWidth
     }
 
 
     private inline fun Paint.forLine(block: () -> Unit) {
-        //TODO implement me
+        val oldStyle = style
+        val oldWidth = strokeWidth
+
+        style = Paint.Style.STROKE
+        strokeWidth = 0f
+        pathEffect = dashs
+        color = underlineColor
+
+        block()
+
+        style = oldStyle
+        pathEffect = null
+        strokeWidth = oldWidth
+    }
+
+    private inline fun Paint.forText(block: () -> Unit) {
+        val oldColor = color
+        color = underlineColor
+        block()
+        color = oldColor
     }
 }

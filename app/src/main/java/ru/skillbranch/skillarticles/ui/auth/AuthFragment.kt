@@ -1,13 +1,13 @@
 package ru.skillbranch.skillarticles.ui.auth
 
 import android.text.Spannable
-import android.text.style.UnderlineSpan
 import androidx.core.text.set
 import androidx.fragment.app.viewModels
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.databinding.FragmentAuthBinding
 import ru.skillbranch.skillarticles.extensions.attrValue
 import ru.skillbranch.skillarticles.ui.BaseFragment
+import ru.skillbranch.skillarticles.ui.custom.spans.UnderlineSpan
 import ru.skillbranch.skillarticles.ui.delegates.viewBinding
 import ru.skillbranch.skillarticles.viewmodels.auth.AuthState
 import ru.skillbranch.skillarticles.viewmodels.auth.AuthViewModel
@@ -23,13 +23,13 @@ class AuthFragment() : BaseFragment<AuthState, AuthViewModel, FragmentAuthBindin
             tvRegister.setOnClickListener { onClickRegistration()}
             btnLogin.setOnClickListener { onClickLogin() }
 
-            (tvPrivacy.text as Spannable).let { it[0..it.length] = ru.skillbranch.skillarticles.ui.custom.spans.UnderlineSpan(decorColor)}
-            (tvRegister.text as Spannable).let { it[0..it.length] = ru.skillbranch.skillarticles.ui.custom.spans.UnderlineSpan(decorColor)}
+           (tvPrivacy.text as Spannable).let { it[0..it.length] = UnderlineSpan(decorColor)}
+           (tvRegister.text as Spannable).let { it[0..it.length] = UnderlineSpan(decorColor) }
         }
     }
 
     override fun setupViews() {
-        TODO("Not yet implemented")
+        //handle input errors this (show error on text input layout)
     }
 
     override fun onClickPrivacy() {

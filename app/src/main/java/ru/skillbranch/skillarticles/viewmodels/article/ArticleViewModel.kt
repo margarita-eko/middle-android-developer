@@ -6,6 +6,9 @@ import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavOptions
+import ru.skillbranch.skillarticles.MainFlowDirections
+import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.AppSettings
 import ru.skillbranch.skillarticles.data.ArticleData
 import ru.skillbranch.skillarticles.data.ArticlePersonalInfo
@@ -15,11 +18,15 @@ import ru.skillbranch.skillarticles.extensions.format
 import ru.skillbranch.skillarticles.extensions.indexesOf
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.data.repositories.clearContent
+import ru.skillbranch.skillarticles.ui.article.ArticleFragmentArgs
 
-class ArticleViewModel(private val articleId: String, savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle), IArticleViewModel {
+class ArticleViewModel(savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle), IArticleViewModel {
 
     private val repository = ArticleRepository
-    private var menuIsShown = false
+    private val args: ArticleFragmentArgs = ArticleFragmentArgs.fromSavedStateHandle(savedStateHandle)
+
+    private val articleId = args.articleId
+
     private var clearContent: String? = null
 
     init {
@@ -83,7 +90,7 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
     //session state
     override fun handleToggleMenu(){
         updateState { state ->
-            state.copy(isShowMenu = !state.isShowMenu).also { menuIsShown = !state.isShowMenu }
+            state.copy(isShowMenu = !state.isShowMenu)
         }
     }
 
@@ -138,13 +145,6 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         notify(Notify.ErrorMessage(msg, "OK", null))
     }
 
-    fun hideMenu(){
-        updateState { it.copy(isShowMenu = false) }
-    }
-
-    fun showMenu(){
-        updateState { it.copy(isShowMenu = menuIsShown) }
-    }
 
     override fun handleSearch(query: String?){
         query ?: return
@@ -178,6 +178,13 @@ class ArticleViewModel(private val articleId: String, savedStateHandle: SavedSta
         notify(Notify.TextMessage("Code copied to clipboard"))
     }
 
+
+    fun handleSendComment() {
+        if (!currentState.isAuth) {
+            val action = MainFlowDirections.startLogin((R.id.nav_articles))
+            navigate(NavCommand.Action(action))
+        }
+    }
     companion object{
         private const val TAG = "ArticleViewModel"
     }
@@ -252,6 +259,7 @@ data class ArticleState(
             poster = map["poster"] as String?,
             content = map["content"] as List<MarkdownElement>,
             reviews = map["reviews"] as List<Any>,
+            message = map["message"] as String?,
         )
     }
 
@@ -268,8 +276,8 @@ data class BottombarData(
 
 data class SubmenuData(
     val isShowMenu: Boolean = false,
-    val isDarkMode: Boolean = false,
-    val isBigText: Boolean = false
+    val isBigText: Boolean = false,
+    val isDarkMode: Boolean = false
 )
 
 fun ArticleState.toBottombarData() = BottombarData(isLike, isBookmark, isShowMenu, isSearch, searchResults.size, searchPosition)

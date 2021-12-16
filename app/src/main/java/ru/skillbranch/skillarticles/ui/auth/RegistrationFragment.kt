@@ -17,7 +17,6 @@ class RegistrationFragment : BaseFragment<AuthState, AuthViewModel, FragmentRegi
     override val viewBinding: FragmentRegistrationBinding by viewBinding(FragmentRegistrationBinding::bind)
     private val decorColor by lazy { requireContext().attrValue(R.attr.colorPrimary) }
     override fun renderUi(data: AuthState) {
-        TODO("Not yet implemented")
     }
 
     override fun setupViews() {

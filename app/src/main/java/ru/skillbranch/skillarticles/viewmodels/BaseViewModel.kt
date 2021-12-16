@@ -71,11 +71,20 @@ abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: Save
     /***
      * вспомогательная функция позволяющая наблюдать за измеениями частей стейта ViewModel
      */
-    fun <D> observeSubState(owner: LifecycleOwner, transform: (T) -> D, onChanged: (subState: D) -> Unit){
+    fun <D> observeSubState(
+        owner: LifecycleOwner,
+        transform: (T) -> D,
+        onChanged: (subState: D) -> Unit
+    ){
         state
             .map(transform) //трансформируем весь стейт в необходимую модель substate
             .distinctUntilChanged() //отфильтровываем и пропускаем дальше только, если значение изменилось
-            .observe(owner, Observer{onChanged(it!!)})
+            .observe(
+                owner,
+                Observer{
+                    onChanged(it!!)
+                }
+            )
     }
 
     /***
@@ -123,20 +132,6 @@ abstract class BaseViewModel<T>(initState: T, private val savedStateHandle: Save
         savedStateHandle.set("state",currentState)
     }
 
-}
-
-class ViewModelFactory(owner: SavedStateRegistryOwner, private val params: String) : AbstractSavedStateViewModelFactory(owner, bundleOf()) {
-    override fun <T : ViewModel?> create(
-        key: String,
-        modelClass: Class<T>,
-        handle: SavedStateHandle
-    ): T {
-        if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
-            return ArticleViewModel(params,handle) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-
-    }
 }
 
 class Event<out E>(private val content: E) {
