@@ -1,12 +1,10 @@
 package ru.skillbranch.skillarticles.viewmodels
 
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavOptions
 import ru.skillbranch.skillarticles.MainFlowDirections
 import ru.skillbranch.skillarticles.R
 import ru.skillbranch.skillarticles.data.AppSettings
@@ -19,8 +17,10 @@ import ru.skillbranch.skillarticles.extensions.indexesOf
 import ru.skillbranch.skillarticles.data.repositories.MarkdownElement
 import ru.skillbranch.skillarticles.data.repositories.clearContent
 import ru.skillbranch.skillarticles.ui.article.ArticleFragmentArgs
+import ru.skillbranch.skillarticles.viewmodels.article.IArticleViewModel
 
-class ArticleViewModel(savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle), IArticleViewModel {
+class ArticleViewModel(savedStateHandle: SavedStateHandle): BaseViewModel<ArticleState>(ArticleState(),savedStateHandle),
+    IArticleViewModel {
 
     private val repository = ArticleRepository
     private val args: ArticleFragmentArgs = ArticleFragmentArgs.fromSavedStateHandle(savedStateHandle)
@@ -174,17 +174,17 @@ class ArticleViewModel(savedStateHandle: SavedStateHandle): BaseViewModel<Articl
         updateState { it.copy(searchPosition = it.searchPosition.inc()) }
     }
 
-    fun handleCopyCode() {
+    override fun handleCopyCode() {
         notify(Notify.TextMessage("Code copied to clipboard"))
     }
 
-
-    fun handleSendComment() {
+    override fun handleSendMessage(message: String) {
         if (!currentState.isAuth) {
             val action = MainFlowDirections.startLogin((R.id.nav_articles))
             navigate(NavCommand.Action(action))
         }
     }
+
     companion object{
         private const val TAG = "ArticleViewModel"
     }

@@ -290,7 +290,7 @@ class ArticleFragment : BaseFragment<ArticleState, ArticleViewModel, FragmentArt
     }
 
     override fun onClickMessageSend() {
-        viewModel.handleSendComment()
+        viewModel.handleSendMessage(viewBinding.etComment.text.toString())
     }
 
 }
